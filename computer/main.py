@@ -3,7 +3,6 @@ import json
 import numpy as np
 import socket
 import struct
-from playsound import playsound
 from collections import defaultdict
 
 ##################################################
@@ -19,7 +18,6 @@ class Recycling:
                         2: 'PET plastic_bottle with_label', 3: 'PET plastic_bottle without_label',
                         4: 'CAN drink_can crushed', 5: 'CAN drink_can no_crushed'}
         self.object_cnt = defaultdict(int)
-        self.path = "./audio/"
         self.is_button_clicked = False
         self.reward = 0
         self.OD = Object_Detection()
@@ -65,10 +63,9 @@ class Recycling:
                         (0, 255, 0), 2)
             self.object_cnt[class_id] += 1
             idx = max(self.object_cnt, key=lambda key: self.object_cnt[key])
-            if self.object_cnt[idx] > 15:
+            if self.object_cnt[idx] > 30:
                 detected_object = self.classes[idx]
                 string = detected_object.split(' ')
-                playsound(self.path + string[1] + ' ' + string[2] + '.mp3')
                 self.reward += int(self.info[string[0]][string[1]][1])
                 self.connection.send(struct.pack('f', (idx+1)*1000 + self.reward))
                 self.object_cnt.clear()

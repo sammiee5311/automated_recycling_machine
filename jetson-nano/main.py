@@ -43,6 +43,7 @@ def gstreamer_pipeline(
 
 cap = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0, flip_method=0), cv2.CAP_GSTREAMER)
 
+GPIO.cleanp()
 IP = ''
 PORT = 1234
 
@@ -70,7 +71,7 @@ while True:
     data = np.array(frame)
     stringData = data.tostring()
     cur_object = None
-    is_button_clicked = GPIO.input(15)
+    is_button_clicked = not GPIO.input(15)
     
     s.sendall((str(len(stringData))).encode().ljust(16) + stringData)
     received_num = s.recv(10)
@@ -95,5 +96,3 @@ while True:
         if personal_number:
             QD.update_reward(personal_number, str(reward))
         reward = 0
-
-GPIO.cleanp()
