@@ -14,6 +14,14 @@ Global Capstone Design (01-09-20 ~ 01-16-20)
 
 ![](./images/system_design.png)
 
+## Model
+
+![](./images/model_img.png)
+
+## Demonstration
+
+![](./images/demonstration.gif)
+
 ## How it works
 1. Put any recycling items in the machine.
 2. Wait until the machine detect whether it can be recycled or not..
