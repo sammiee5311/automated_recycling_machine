@@ -1,5 +1,7 @@
 # Capstone_design
-Global Capstone Design (01-09-20 ~ 01-16-20)
+Global Capstone Design (01-09-20 ~ 01-16-20) <br>
+
+https://sammiee5311.github.io/capston/Global-Capstone-Design/
 
 ## Topic
 + Sustainable living in the New Normal
