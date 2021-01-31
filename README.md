@@ -24,7 +24,7 @@
 
 ## How it works
 1. Put any recycling items in the machine.
-2. Wait until the machine detect whether it can be recycled or not..
+2. Wait until the machine detect whether it can be recycled or not.
 3. If the item is available to recycle, it will fell down in the trash bin.
 4. Get the reward depends on how many you put and which object you put.
 
