@@ -16,10 +16,7 @@
 
 ## Reward
 
-<p float="left">
-  <img src="./images/reward_1.png" width="450" heights="405" />
-  <img src="./images/reward_3.png" width="450" heights="405" /> 
-</p>
+![](./images/reward_1.png)
 
 ![](./images/reward_2.png)
 
