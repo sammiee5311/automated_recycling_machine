@@ -15,9 +15,9 @@ def gstreamer_pipeline(
     sensor_id=0,
     capture_width=1280,
     capture_height=720,
-    display_width=1280,
-    display_height=720,
-    framerate=60,
+    display_width=416,
+    display_height=416,
+    framerate=10,
     flip_method=0,
 ):
     return (
@@ -41,9 +41,8 @@ def gstreamer_pipeline(
     )
 
 
-cap = cv2.VideoCapture(gstreamer_pipeline(sensor_id=0, flip_method=0), cv2.CAP_GSTREAMER)
+cap = cv2.VideoCapture(gstreamer_pipeline(sensor_id=1, flip_method=0), cv2.CAP_GSTREAMER)
 
-GPIO.cleanp()
 IP = ''
 PORT = 1234
 
@@ -56,17 +55,20 @@ GPIO.setup(15, GPIO.IN)
 
 received_num = b''
 reward = 0
-is_button_clicked = True
+is_button_clicked = False
 QD = QR_DB_Module()
 MM = Motor_Module(26, 24, 32, 33)
 
-classes = {1: 'PET plastic_bottle with_label', 2: 'PET plastic_bottle without_label', 3: 'PAPER cardboard with_sticker',
-            4: 'PAPER cardboard without_sticker', 5: 'PAPER coffee_cup with_cap', 6: 'PAPER coffee_cup without_cap',
-            7: 'PAPER snack_box', 8: 'CAN drink_can'}
+
+classes = { 1: 'PET plastic_bottle with_label', 2: 'PAPER coffee_cup without_cap',
+            3: 'PET plastic_bottle with_label', 4: 'PET plastic_bottle without_label',
+            5: 'CAN drink_can crushed', 6: 'CAN drink_can no_crushed'}
 
 while True:
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(15, GPIO.IN)
     _, img = cap.read()
-    img = cv2.resize(img, None, fx=0.4, fy=0.4)
+    # img = cv2.resize(img, None, fx=0.4, fy=0.4)
     result, frame = cv2.imencode('.jpg', img)
     data = np.array(frame)
     stringData = data.tostring()
@@ -82,12 +84,14 @@ while True:
         cur_object = classes[int(received_num/1000)]
         string = cur_object.split(' ')
         if string[0] == 'PET' and string[-1] == 'without_label':
-            MM.move_two_motors(2, 10)
-        elif string[0] == 'PAPER' and string[-1] == 'without_sticker' or 'without_cap':
+            MM.move_two_motors(2, 9)
+            MM.move_one_motor()
+        elif string[0] == 'PAPER' and string[-1] in ['without_sticker','without_cap']:
             MM.move_two_motors(2, 12)
+            MM.move_one_motor()
         elif string[0] == 'CAN':
             MM.move_two_motors(5, 12)
-        MM.move_one_motor()
+            MM.move_one_motor()
         MM.move_two_motors(2, 12)
         reward += cur_reward
         
@@ -96,3 +100,4 @@ while True:
         if personal_number:
             QD.update_reward(personal_number, str(reward))
         reward = 0
+        GPIO.cleanup()

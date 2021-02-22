@@ -20,7 +20,7 @@ class QR_DB_Module:
         self.cursor = self.my_db.cursor(MySQLdb.cursors.DictCursor)
 
     def gstreamer_pipeline(self, sensor_id=0, capture_width=1280, capture_height=720, display_width=1280,
-                                 display_height=720, framerate=60, flip_method=0):
+                                 display_height=720, framerate=10, flip_method=0):
         return (
             "nvarguscamerasrc sensor-id=%d ! "
             "video/x-raw(memory:NVMM), "
@@ -42,13 +42,12 @@ class QR_DB_Module:
         )
 
     def get_barcode_info(self):
-        cap = cv2.VideoCapture(self.gstreamer_pipeline(sensor_id=1, flip_method=0), cv2.CAP_GSTREAMER)
+        cap = cv2.VideoCapture(self.gstreamer_pipeline(sensor_id=0, flip_method=0), cv2.CAP_GSTREAMER)
         personal_number = None
         cnt = 0
         while not personal_number and cnt < 5000:
             _, img = cap.read()
             img = cv2.resize(img, None, fx=0.4, fy=0.4)
-            cv2.imshow('img', img)
             key = cv2.waitKey(1) & 0xFF
             if key == 27:
                 break

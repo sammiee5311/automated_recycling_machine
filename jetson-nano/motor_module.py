@@ -27,21 +27,25 @@ class Motor_Module:
         self.servo2.stop()
 
     def move_one_motor(self):
-        GPIO.output(self.IN1, GPIO.HIGH)
-        GPIO.output(self.IN2, GPIO.LOW)
-        time.sleep(1)
-
         GPIO.output(self.IN1, GPIO.LOW)
         GPIO.output(self.IN2, GPIO.HIGH)
         time.sleep(1)
+        GPIO.output(self.IN2, GPIO.LOW)
+        time.sleep(0.5)
+
+        GPIO.output(self.IN1, GPIO.HIGH)
+        GPIO.output(self.IN2, GPIO.LOW)
+        time.sleep(1)
+        GPIO.output(self.IN1, GPIO.LOW)
+        time.sleep(0.5)
 
 
 if __name__ == '__main__':
     MM = Motor_Module(26, 24, 32, 33)
     MM.move_two_motors(2, 12)  # reset
-    MM.move_two_motors(2, 10)  # plastic
+    MM.move_two_motors(2, 9)  # plastic
     MM.move_two_motors(2, 12)  # paper
     MM.move_two_motors(5, 12)  # can
     MM.move_two_motors(2, 12)  # reset
-    MM.move_one_motor()
+    # MM.move_one_motor()
     GPIO.cleanup()
