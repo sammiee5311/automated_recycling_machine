@@ -32,11 +32,6 @@ class Object_Detection:
                     x = int(center_x - w / 2)
                     y = int(center_y - h / 2)
 
-                    # x *= 10 / 4
-                    # y *= 10 / 4
-                    # h *= 10 / 4
-                    # w *= 10 / 4
-                    # img = cv2.resize(img, None, fx=10/4, fy=10/4)
                     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
                     return img, x, y, w, h, class_id
 
