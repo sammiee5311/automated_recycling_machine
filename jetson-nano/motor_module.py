@@ -3,7 +3,7 @@ import time
 
 
 class Motor_Module:
-    def __init__(self, IN1, IN2, MOTOR1, MOTOR2):
+    def __init__(self, IN1: int, IN2: int, MOTOR1: int, MOTOR2: int) -> None:
         self.IN1 = IN1
         self.IN2 = IN2
         GPIO.setmode(GPIO.BOARD)
@@ -14,7 +14,7 @@ class Motor_Module:
         GPIO.setup(MOTOR2, GPIO.OUT)
         self.servo2 = GPIO.PWM(MOTOR2, 50)  # pin 33 servo2
     
-    def move_two_motors(self, degree1, degree2):
+    def move_two_motors(self, degree1: int, degree2: int) -> None:
         self.servo1.start(0)
         self.servo2.start(0)
         self.servo1.ChangeDutyCycle(degree1)  # 2 / 5
@@ -26,7 +26,7 @@ class Motor_Module:
         self.servo1.stop()
         self.servo2.stop()
 
-    def move_one_motor(self):
+    def move_one_motor(self) -> None:
         GPIO.output(self.IN1, GPIO.LOW)
         GPIO.output(self.IN2, GPIO.HIGH)
         time.sleep(1)

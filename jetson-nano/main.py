@@ -12,14 +12,14 @@ from motor_module import Motor_Module
 
 
 def gstreamer_pipeline(
-    sensor_id=0,
-    capture_width=1280,
-    capture_height=720,
-    display_width=416,
-    display_height=416,
-    framerate=10,
-    flip_method=0,
-):
+    sensor_id: int = 0,
+    capture_width: int = 1280,
+    capture_height: int = 720,
+    display_width: int = 416,
+    display_height: int = 416,
+    framerate: int = 10,
+    flip_method: int = 0,
+) -> str:
     return (
         "nvarguscamerasrc sensor-id=%d ! "
         "video/x-raw(memory:NVMM), "
@@ -56,8 +56,8 @@ GPIO.setup(15, GPIO.IN)
 received_num = b''
 reward = 0
 is_button_clicked = False
-QD = QR_DB_Module()
-MM = Motor_Module(26, 24, 32, 33)
+qr_db_module = QR_DB_Module()
+motor_module = Motor_Module(26, 24, 32, 33)
 
 
 classes = { 1: 'PET plastic_bottle with_label', 2: 'PAPER coffee_cup without_cap',
@@ -84,20 +84,20 @@ while True:
         cur_object = classes[int(received_num/1000)]
         string = cur_object.split(' ')
         if string[0] == 'PET' and string[-1] == 'without_label':
-            MM.move_two_motors(2, 9)
-            MM.move_one_motor()
+            motor_module.move_two_motors(2, 9)
+            motor_module.move_one_motor()
         elif string[0] == 'PAPER' and string[-1] in ['without_sticker','without_cap']:
-            MM.move_two_motors(2, 12)
-            MM.move_one_motor()
+            motor_module.move_two_motors(2, 12)
+            motor_module.move_one_motor()
         elif string[0] == 'CAN':
-            MM.move_two_motors(5, 12)
-            MM.move_one_motor()
-        MM.move_two_motors(2, 12)
+            motor_module.move_two_motors(5, 12)
+            motor_module.move_one_motor()
+        motor_module.move_two_motors(2, 12)
         reward += cur_reward
         
     if is_button_clicked and reward > 0:
-        personal_number = QD.get_barcode_info()
+        personal_number = qr_db_module.get_barcode_info()
         if personal_number:
-            QD.update_reward(personal_number, str(reward))
+            qr_db_module.update_reward(personal_number, str(reward))
         reward = 0
         GPIO.cleanup()

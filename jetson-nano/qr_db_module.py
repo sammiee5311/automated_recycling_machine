@@ -4,7 +4,7 @@ import MySQLdb
 
 
 class QR_DB_Module:
-    def __init__(self):
+    def __init__(self) -> None:
         self.USER = ''
         self.PASSWORD = ''
         self.HOST = ''
@@ -19,8 +19,8 @@ class QR_DB_Module:
         )
         self.cursor = self.my_db.cursor(MySQLdb.cursors.DictCursor)
 
-    def gstreamer_pipeline(self, sensor_id=0, capture_width=1280, capture_height=720, display_width=1280,
-                                 display_height=720, framerate=10, flip_method=0):
+    def gstreamer_pipeline(self, sensor_id: int = 0, capture_width: int = 1280, capture_height: int = 720, display_width: int = 1280,
+                                 display_height: int = 720, framerate: int = 10, flip_method:int = 0) -> str:
         return (
             "nvarguscamerasrc sensor-id=%d ! "
             "video/x-raw(memory:NVMM), "
@@ -41,7 +41,7 @@ class QR_DB_Module:
             )
         )
 
-    def get_barcode_info(self):
+    def get_barcode_info(self) -> int:
         cap = cv2.VideoCapture(self.gstreamer_pipeline(sensor_id=0, flip_method=0), cv2.CAP_GSTREAMER)
         personal_number = None
         cnt = 0
@@ -60,7 +60,7 @@ class QR_DB_Module:
 
         return personal_number
 
-    def update_reward(self, personal_number, recycle_reward):
+    def update_reward(self, personal_number: int, recycle_reward: int) -> int:
         sql = "SELECT * FROM user_list WHERE user_number = %s" % personal_number
         sql2 = "UPDATE user_list SET rw = rw+%s WHERE user_number = %s" % (recycle_reward, personal_number)
         self.update(sql2)
@@ -68,12 +68,12 @@ class QR_DB_Module:
 
         return rw
 
-    def select(self, sql):
+    def select(self, sql: str) -> int:
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         return result[0]['rw']
 
-    def update(self, sql):
+    def update(self, sql: str) -> None:
         self.cursor.execute(sql)
         self.my_db.commit()
 

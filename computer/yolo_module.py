@@ -1,14 +1,15 @@
 import cv2
 import numpy as np
+from typing import Tuple
 
 
 class Object_Detection:
-    def __init__(self):
+    def __init__(self) -> None:
         self.net = cv2.dnn.readNet("./yolo_file/yolov3-tiny_obj_best.weights", "./yolo_file/yolov3-tiny_obj.cfg")
         self.layer_names = self.net.getLayerNames()
         self.output_layers = [self.layer_names[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
 
-    def detect_object(self, img):
+    def detect_object(self, img: np.ndarray[np.int64]) -> Tuple[np.ndarray[np.int64], int, int, int, int, int]:
         x, y, w, h = -1, -1, -1, -1
         height, width, _ = img.shape
         class_id = -1
