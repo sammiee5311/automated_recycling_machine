@@ -1,16 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: yechan
-  Date: 2022/03/14
-  Time: 5:15 오후
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>login</title>
 </head>
 <body>
-
+<form>
+    <div>
+        <input type="text" name="id" placeholder="id">
+        <input type="password" name="password" placeholder="password">
+        <button>login</button>
+    </div>
+</form>
 </body>
 </html>
